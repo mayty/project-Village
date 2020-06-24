@@ -4,9 +4,14 @@
 
 namespace mns
 {
+	enum class events
+	{
+		other, none, quit, keyboard, mouse
+	};
 	class window
 	{
 	private:
+		SDL_Scancode last_pressed;
 		SDL_Window* sdl_window;
 		SDL_Renderer* sdl_renderer;
 	public:
@@ -18,8 +23,10 @@ namespace mns
 		void update();
 		void clear();
 		void fill(uint8_t r, uint8_t g, uint8_t b);
+		SDL_Scancode get_last_press();
 		SDL_Window* get_window();
 		SDL_Renderer* get_renderer();
+		events get_event();
 		~window();
 	private:
 		void destroy();

@@ -2,6 +2,7 @@
 
 mns::window::window(const std::string& name, size_t w, size_t h)
 {
+	last_pressed = SDL_SCANCODE_ESCAPE;
 	sdl_window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
 	if (!sdl_window)
 	{
@@ -49,14 +50,38 @@ void mns::window::fill(uint8_t r, uint8_t g, uint8_t b)
 	SDL_RenderClear(sdl_renderer);
 }
 
+SDL_Scancode mns::window::get_last_press()
+{
+	return last_pressed;
+}
+
 SDL_Window* mns::window::get_window()
 {
-	return nullptr;
+	return sdl_window;
 }
 
 SDL_Renderer* mns::window::get_renderer()
 {
-	return nullptr;
+	return sdl_renderer;
+}
+
+mns::events mns::window::get_event()
+{
+	SDL_Event event;
+	if (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_QUIT)
+		{
+			return events::quit;
+		}
+		if (event.type == SDL_KEYDOWN)
+		{
+			last_pressed = event.key.keysym.scancode;
+			return events::keyboard;
+		}
+		return events::other;
+	}
+	return events::none;
 }
 
 mns::window::~window()

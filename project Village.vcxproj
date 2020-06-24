@@ -149,14 +149,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="field.cpp" />
     <ClCompile Include="initializer.cpp" />
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="tile.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="drawable.h" />
+    <ClInclude Include="field.h" />
     <ClInclude Include="initializer.h" />
     <ClInclude Include="logger.h" />
+    <ClInclude Include="tile.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
