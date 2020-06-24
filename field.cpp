@@ -112,9 +112,9 @@ void mns::field::generate_lakes()
 {
 	generate_random();
 
-	group_tiles(tiles, mns::tile_types::tree, mns::tile_types::ground, 2, 3, 8);
-	group_tiles(tiles, mns::tile_types::water, mns::tile_types::ground, 3, 6, 7);
-	group_tiles(tiles, mns::tile_types::water, mns::tile_types::ground, 7, 4, 7);
+	group_tiles(tiles, mns::tile_types::water, mns::tile_types::ground, 3, 8, 7);
+	group_tiles(tiles, mns::tile_types::water, mns::tile_types::ground, 7, 5, 7);
+	group_tiles(tiles, mns::tile_types::tree, mns::tile_types::ground, 4, 3, 9);
 }
 
 void mns::field::generate_islands()
