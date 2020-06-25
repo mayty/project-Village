@@ -168,8 +168,8 @@ void mns::field::generate_small_lakes()
 {
 	generate_random();
 
-	group_tiles(tiles, mns::tile_types::tree, mns::tile_types::ground, 2, 3, 8);
 	group_tiles(tiles, mns::tile_types::water, mns::tile_types::ground, 3, 6, 7);
+	group_tiles(tiles, mns::tile_types::tree, mns::tile_types::ground, 3, 3, 8);
 }
 
 void mns::field::generate_lakes()

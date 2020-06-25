@@ -35,7 +35,7 @@ void mns::entity::draw(mns::window& window)
 
 void mns::entity::update(mns::field& field)
 {
-	/*if (is_dead)
+	if (is_dead)
 	{
 		return;
 	}
@@ -88,22 +88,22 @@ void mns::entity::update(mns::field& field)
 	{
 		y -= tile_size * speed;
 	}
-	daily_toll();*/
+	daily_toll();
 }
 
 std::pair<int, int> mns::entity::get_closest_to(int x, int y, tile_types type, mns::field& field)
 {
-	/*std::queue<std::pair<int, int>> points;
-	std::unordered_set<std::pair<int, int>> uniqie_points;
+	std::queue<std::pair<int, int>> points;
+	//std::unordered_set<std::pair<int, int>> uniqie_points;
 	points.push(std::make_pair(x, y));
-	uniqie_points.insert(std::make_pair(x, y));
+	//uniqie_points.insert(std::make_pair(x, y));
 	while (!points.empty())
 	{
 		if (field.get_tile_type(points.front().X, points.front().Y) == type)
 		{
 			return points.front();
 		}
-		if (uniqie_points.find(std::make_pair(points.front().X + 1, points.front().Y)) != uniqie_points.end())
+		/*if (uniqie_points.find(std::make_pair(points.front().X + 1, points.front().Y)) != uniqie_points.end())
 		{
 			uniqie_points.insert(std::make_pair(points.front().X + 1, points.front().Y));
 			points.push(std::make_pair(points.front().X + 1, points.front().Y));
@@ -122,10 +122,10 @@ std::pair<int, int> mns::entity::get_closest_to(int x, int y, tile_types type, m
 		{
 			uniqie_points.insert(std::make_pair(points.front().X, points.front().Y - 1));
 			points.push(std::make_pair(points.front().X, points.front().Y - 1));
-		}
+		}*/
 		points.pop();
 	}
-	throw std::exception{};*/
+	throw std::exception{};
 	return std::make_pair(0, 0);
 }
 
