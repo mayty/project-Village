@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entity.cpp" />
     <ClCompile Include="field.cpp" />
     <ClCompile Include="initializer.cpp" />
     <ClCompile Include="logger.cpp" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="drawable.h" />
+    <ClInclude Include="entity.h" />
     <ClInclude Include="field.h" />
     <ClInclude Include="initializer.h" />
     <ClInclude Include="logger.h" />

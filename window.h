@@ -17,9 +17,9 @@ namespace mns
 	public:
 		window(const std::string& name, size_t w, size_t h);
 		window(const window& other) = delete;
-		window(window&& other);
+		window(window&& other) noexcept;
 		window& operator=(const window& other) = delete;
-		window& operator=(window&& other);
+		window& operator=(window&& other) noexcept;
 		void update();
 		void clear();
 		void fill(uint8_t r, uint8_t g, uint8_t b);

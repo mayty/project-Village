@@ -27,9 +27,34 @@ void mns::tile::set_size(int h, int w)
 	base.w = w;
 }
 
+void mns::tile::set_value(int value)
+{
+	this->value = value;
+}
+
 mns::tile_types mns::tile::get_type()
 {
 	return type;
+}
+
+int mns::tile::get_value()
+{
+	return value;
+}
+
+int mns::tile::dec_value(int val)
+{
+	if (value >= val)
+	{
+		value -= val;
+	}
+	else
+	{
+		val = value;
+		value = 0;
+		type = mns::tile_types::ground;
+	}
+	return val;
 }
 
 void mns::tile::draw(mns::window& window)
@@ -37,16 +62,13 @@ void mns::tile::draw(mns::window& window)
 	switch (type)
 	{
 	case tile_types::ground:
-		SDL_SetRenderDrawColor(window.get_renderer(), 128, 128, 0, 255);
-		SDL_RenderFillRect(window.get_renderer(), &base);
+		draw_ground(window);
 		break;
 	case tile_types::tree:
-		SDL_SetRenderDrawColor(window.get_renderer(), 0, 200, 0, 255);
-		SDL_RenderFillRect(window.get_renderer(), &base);
+		draw_tree(window);
 		break;
 	case tile_types::water:
-		SDL_SetRenderDrawColor(window.get_renderer(), 30, 30, 255, 255);
-		SDL_RenderFillRect(window.get_renderer(), &base);
+		draw_water(window);
 		break;
 	default:
 		SDL_SetRenderDrawColor(window.get_renderer(), 255, 255, 255, 255);
@@ -56,4 +78,30 @@ void mns::tile::draw(mns::window& window)
 
 mns::tile::~tile()
 {
+}
+
+static const int ground_r = 128;
+static const int ground_g = 128;
+static const int ground_b = 0;
+
+void mns::tile::draw_tree(mns::window& window)
+{
+	double k = value / (9.0 * tile_quant);
+
+	SDL_SetRenderDrawColor(window.get_renderer(), 0 * k + (1 - k) * ground_r, 200 * k + (1 - k) * ground_g, 0 * k + (1 - k) * ground_b, 255);
+	SDL_RenderFillRect(window.get_renderer(), &base);
+}
+
+void mns::tile::draw_ground(mns::window& window)
+{
+	SDL_SetRenderDrawColor(window.get_renderer(), ground_r, ground_g, ground_b, 255);
+	SDL_RenderFillRect(window.get_renderer(), &base);
+}
+
+void mns::tile::draw_water(mns::window& window)
+{
+
+	double k = value / (9.0 * tile_quant);
+	SDL_SetRenderDrawColor(window.get_renderer(), 30 * k + (1 - k) * ground_r, 30 * k + (1 - k) * ground_g, 255 * k + (1 - k) * ground_b, 255);
+	SDL_RenderFillRect(window.get_renderer(), &base);
 }

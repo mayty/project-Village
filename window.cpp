@@ -16,7 +16,7 @@ mns::window::window(const std::string& name, size_t w, size_t h)
 	}
 }
 
-mns::window::window(window&& other)
+mns::window::window(window&& other) noexcept
 {
 	sdl_window = other.sdl_window;
 	sdl_renderer = other.sdl_renderer;
@@ -24,7 +24,7 @@ mns::window::window(window&& other)
 	other.sdl_window = nullptr;
 }
 
-mns::window& mns::window::operator=(window&& other)
+mns::window& mns::window::operator=(window&& other) noexcept
 {
 	destroy();
 	sdl_window = other.sdl_window;

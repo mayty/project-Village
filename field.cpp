@@ -6,7 +6,6 @@ static std::vector<mns::tile_types> get_probability_vector(const std::unordered_
 
 mns::field::field(size_t w, size_t h, mns::generation_type generation_type)
 {
-	int tile_size = 5;
 	tiles.resize(h);
 	for (int i = 0; i < tiles.size(); ++i)
 	{
@@ -32,6 +31,8 @@ mns::field::field(size_t w, size_t h, mns::generation_type generation_type)
 		generate_lakes();
 		break;
 	}
+	normilize(mns::tile_types::tree);
+	normilize(mns::tile_types::water);
 }
 
 void mns::field::generate_new(mns::generation_type generation_type)
@@ -54,6 +55,8 @@ void mns::field::generate_new(mns::generation_type generation_type)
 		generate_islands();
 		break;
 	}
+	normilize(mns::tile_types::tree);
+	normilize(mns::tile_types::water);
 }
 
 void mns::field::draw(mns::window& window)
@@ -65,6 +68,67 @@ void mns::field::draw(mns::window& window)
 			j.draw(window);
 		}
 	}
+}
+
+int mns::field::get_height()
+{
+	return tiles.size();
+}
+
+int mns::field::get_widht()
+{
+	return tiles[0].size();
+}
+
+mns::tile_types mns::field::get_tile_type(int x, int y)
+{
+	if (x < 0 || y < 0)
+	{
+		throw std::exception{};
+	}
+	if (y >= tiles.size())
+	{
+		throw std::exception{};
+	}
+	if (x >= tiles[y].size())
+	{
+		throw std::exception{};
+	}
+	return tiles[y][x].get_type();
+}
+
+int mns::field::get_tile_value(int x, int y)
+{
+	if (x < 0 || y < 0)
+	{
+		throw std::exception{};
+	}
+	if (y >= tiles.size())
+	{
+		throw std::exception{};
+	}
+	if (x >= tiles[y].size())
+	{
+		throw std::exception{};
+	}
+	return tiles[y][x].get_value();
+}
+
+int mns::field::dec_value(int x, int y, int val)
+{
+	if (x < 0 || y < 0)
+	{
+		throw std::exception{};
+	}
+	if (y >= tiles.size())
+	{
+		throw std::exception{};
+	}
+	if (x >= tiles[y].size())
+	{
+		throw std::exception{};
+	}
+	return tiles[y][x].dec_value(val);
 }
 
 mns::field::~field()
@@ -278,6 +342,32 @@ void mns::field::change_from_to(matrix<tile>& matrix, int x, int y, tile_types f
 	if (matrix[y][x].get_type() == from)
 	{
 		matrix[y][x].set_type(to);
+	}
+}
+
+void mns::field::normilize(tile_types type)
+{
+	for (int i = 0; i < tiles.size(); ++i)
+	{
+		for (int j = 0; j < tiles[i].size(); ++j)
+		{
+			if (get_tile(tiles, j, i, type) != type)
+			{
+				continue;
+			}
+			int counter = 0;
+			for (int y = -1; y <= 1; ++y)
+			{
+				for (int x = -1; x <= 1; ++x)
+				{
+					if (get_tile(tiles, j + x, i + y, type) == type)
+					{
+						++counter;
+					}
+				}
+			}
+			tiles[i][j].set_value(tile_quant * counter);
+		}
 	}
 }
 

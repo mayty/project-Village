@@ -4,6 +4,7 @@
 #include "window.h"
 #include "initializer.h"
 #include "field.h"
+#include "entity.h"
 
 int main(int argC, char** argV)
 {
@@ -26,7 +27,8 @@ int main(int argC, char** argV)
 		window.update();
 
 		bool to_exit = false;
-		while (!to_exit)
+		bool to_continue = false;
+		while (!to_exit && !to_continue)
 		{
 			switch (window.get_event())
 			{
@@ -64,6 +66,9 @@ int main(int argC, char** argV)
 				case SDL_SCANCODE_ESCAPE:
 					to_exit = true;
 					break;
+				case SDL_SCANCODE_RETURN:
+					to_continue = true;
+					break;
 				}
 				window.clear();
 				field.draw(window);
@@ -78,6 +83,13 @@ int main(int argC, char** argV)
 							to_exit = true;
 							empty_queue = true;
 							break;
+						case mns::events::keyboard:
+							if (window.get_last_press() == SDL_SCANCODE_RETURN)
+							{
+								to_continue = true;
+								empty_queue = true;
+							}
+							break;
 						case mns::events::none:
 							empty_queue = true;
 							break;
@@ -88,6 +100,38 @@ int main(int argC, char** argV)
 			default:
 				SDL_Delay(33);
 			}
+		}
+
+		//mns::entity test;
+
+		while (!to_exit)
+		{
+			bool no_events = false;
+			while (!no_events)
+			{
+				switch (window.get_event())
+				{
+				case mns::events::quit:
+					to_exit = true;
+					no_events = true;
+					break;
+				case mns::events::keyboard:
+					if (window.get_last_press() == SDL_SCANCODE_ESCAPE)
+					{
+						to_exit = true;
+						no_events = true;
+					}
+					break;
+				case mns::events::none:
+					no_events = true;
+				}
+			}
+			//test.update(field);
+			window.clear();
+			field.draw(window);
+			//test.draw(window);
+			window.update();
+			SDL_Delay(100);
 		}
 
 	}
