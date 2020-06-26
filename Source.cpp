@@ -5,23 +5,41 @@
 #include "initializer.h"
 #include "field.h"
 #include "entity.h"
+#include "texture_manager.h"
 
 int main(int argC, char** argV)
 {
 	mns::logger logger{};
-	logger.set_mask_flag(mns::log_types::world_generation);
-	logger.set_mask_flag(mns::log_types::tile_modification);
+	//logger.set_mask_flag(mns::log_types::world_generation);
+	//logger.set_mask_flag(mns::log_types::tile_modification);
 	logger.set_mask_flag(mns::log_types::initialization);
+	logger.set_mask_flag(mns::log_types::texture_loading);	
 
 	try
 	{
 		logger.log(mns::log_types::initialization, "Initializing SDL2");
-		mns::initializer initter{};
-		logger.log(mns::log_types::initialization, "Success");
+		mns::initializer initializer{};
+		logger.log(mns::log_types::initialization, "Done");
+
 
 		logger.log(mns::log_types::initialization, "Creating window");
 		mns::window window{ "test", 800, 600 };
-		logger.log(mns::log_types::initialization, "Success");
+		logger.log(mns::log_types::initialization, "Done");
+
+		logger.log(mns::log_types::texture_loading, "loading \"entity_alive.png\" texture");
+		mns::texture_manager::add_texture("entity_alive", "entity_alive.png", window, logger);
+		logger.log(mns::log_types::texture_loading, "Done");
+
+
+		logger.log(mns::log_types::texture_loading, "loading \"entity_dead.png\" texture");
+		mns::texture_manager::add_texture("entity_dead", "entity_dead.png", window, logger);
+		logger.log(mns::log_types::texture_loading, "Done");
+
+
+		logger.log(mns::log_types::texture_loading, "loading \"default.png\" texture");
+		mns::texture_manager::add_texture("default", "default.png", window, logger);
+		logger.log(mns::log_types::texture_loading, "Done");
+
 
 		mns::field field{ logger, 160, 120, mns::generation_type::ground };
 
@@ -42,29 +60,29 @@ int main(int argC, char** argV)
 				switch (window.get_last_press())
 				{
 				case SDL_SCANCODE_1:
-					logger.log("Generation world of ground");
+					logger.log(mns::log_types::world_generation, "Generation world of ground");
 					field.generate_new(mns::generation_type::ground);
-					logger.log("Complete");
+					logger.log(mns::log_types::world_generation, "Done");
 					break;
 				case SDL_SCANCODE_2:
-					logger.log("Generation world of random");
+					logger.log(mns::log_types::world_generation, "Generation world of random");
 					field.generate_new(mns::generation_type::random);
-					logger.log("Complete");
+					logger.log(mns::log_types::world_generation, "Done");
 					break;
 				case SDL_SCANCODE_3:
-					logger.log("Generation world of small lakes");
+					logger.log(mns::log_types::world_generation, "Generation world of small lakes");
 					field.generate_new(mns::generation_type::small_lakes);
-					logger.log("Complete");
+					logger.log(mns::log_types::world_generation, "Done");
 					break; 
 				case SDL_SCANCODE_4:
-					logger.log("Generation world of islands type 1");
+					logger.log(mns::log_types::world_generation, "Generation world of islands type 1");
 					field.generate_new(mns::generation_type::lakes);
-					logger.log("Complete");
+					logger.log(mns::log_types::world_generation, "Done");
 					break;
 				case SDL_SCANCODE_5:
-					logger.log("Generation world of islands type 2");
+					logger.log(mns::log_types::world_generation, "Generation world of islands type 2");
 					field.generate_new(mns::generation_type::islands);
-					logger.log("Complete");
+					logger.log(mns::log_types::world_generation, "Done");
 					break;
 				case SDL_SCANCODE_ESCAPE:
 					to_exit = true;

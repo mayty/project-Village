@@ -1,4 +1,5 @@
 #include "initializer.h"
+#include <SDL_image.h>
 #include <exception>
 
 mns::initializer::initializer()
@@ -7,17 +8,15 @@ mns::initializer::initializer()
 	{
 		throw std::exception{};
 	}
-}
-
-mns::initializer::initializer(uint32_t flags)
-{
-	if (SDL_Init(flags) < 0)
+	if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
 	{
+		SDL_Quit();
 		throw std::exception{};
 	}
 }
 
 mns::initializer::~initializer()
 {
-	SDL_Quit();
+	IMG_Quit();
+	SDL_Quit();	
 }

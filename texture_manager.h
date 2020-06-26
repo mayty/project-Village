@@ -2,6 +2,8 @@
 #include <unordered_map>
 #include <string>
 #include <SDL.h>
+#include "window.h"
+#include "logger.h"
 
 namespace mns
 {
@@ -9,10 +11,11 @@ namespace mns
 	{
 		static std::unordered_map<std::string, SDL_Texture*> textures;
 	public:
-		SDL_Texture* get_texture(const std::string& name);
-		void add_texture(const std::string& name, SDL_Texture* texture);
-		void remove_texture(const std::string& name);
-		void clear();
+		static SDL_Texture* get_texture(const std::string& name);
+		static void add_texture(const std::string& name, SDL_Texture* texture);
+		static void add_texture(const std::string& name, const std::string& filename, mns::window& window, mns::logger& logger);
+		static void remove_texture(const std::string& name);
+		static void clear();
 	};
 }
 

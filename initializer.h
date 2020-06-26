@@ -6,7 +6,6 @@ namespace mns
 	{
 	public:
 		initializer();
-		initializer(uint32_t flags);
 		~initializer();
 	};
 }

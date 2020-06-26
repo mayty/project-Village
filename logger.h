@@ -7,7 +7,7 @@ namespace mns
 	{
 		none = 0, 
 		reserved = 0x1, initialization = 0x2, tile_modification = 0x4, world_generation = 0x8, 
-		entity_debug = 0x10
+		entity_debug = 0x10, texture_loading = 0x20
 	};
 
 	class logger

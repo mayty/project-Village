@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "texture_manager.h"
 #include <queue>
 #include <unordered_set>
 
@@ -32,15 +33,31 @@ void mns::entity::draw(mns::window& window)
 	pos.y -= entity_size / 2;
 	pos.h = entity_size;
 	pos.w = entity_size;
-	if (!is_dead)
+	try
 	{
-		SDL_SetRenderDrawColor(window.get_renderer(), 255, 255, 255, 255);
+		SDL_Texture* texture;
+		if (!is_dead)
+		{
+			texture = mns::texture_manager::get_texture("entity_alive");
+		}
+		else
+		{
+			texture = mns::texture_manager::get_texture("entity_dead");
+		}
+		SDL_RenderCopy(window.get_renderer(), texture, NULL, &pos);
 	}
-	else
+	catch (...)
 	{
-		SDL_SetRenderDrawColor(window.get_renderer(), 0, 0, 0, 255);
+		if (!is_dead)
+		{
+			SDL_SetRenderDrawColor(window.get_renderer(), 255, 255, 255, 255);
+		}
+		else
+		{
+			SDL_SetRenderDrawColor(window.get_renderer(), 0, 0, 0, 255);
+		}
+		SDL_RenderFillRect(window.get_renderer(), &pos);
 	}
-	SDL_RenderFillRect(window.get_renderer(), &pos);
 }
 
 void mns::entity::update(mns::field& field, mns::logger& logger)
