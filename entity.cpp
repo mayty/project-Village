@@ -47,7 +47,7 @@ void mns::entity::update(mns::field& field, mns::logger& logger)
 {
 	if (is_dead)
 	{
-		logger.log(mns::log_types::low, "entity is dead");
+		logger.log(mns::log_types::entity_debug, "entity is dead");
 		return;
 	}
 	int p_x;
@@ -59,12 +59,12 @@ void mns::entity::update(mns::field& field, mns::logger& logger)
 	{
 		if (water < 0.5)
 		{
-			logger.log(mns::log_types::low, "looking for water");
+			logger.log(mns::log_types::entity_debug, "looking for water");
 			dest = get_closest_to(p_x, p_y, mns::tile_types::water, field);
-			logger.log(mns::log_types::low, "found water: " + std::to_string(dest.first) + ':' + std::to_string(dest.second));
+			logger.log(mns::log_types::entity_debug, "found water: " + std::to_string(dest.first) + ':' + std::to_string(dest.second));
 			if (dest.X == p_x && dest.Y == p_y)
 			{
-				logger.log(mns::log_types::low, "location matches current");
+				logger.log(mns::log_types::entity_debug, "location matches current");
 				add(field.dec_value(p_x, p_y, 1));
 				daily_toll();
 				return;
@@ -72,12 +72,12 @@ void mns::entity::update(mns::field& field, mns::logger& logger)
 		}
 		else
 		{
-			logger.log(mns::log_types::low, "looking for trees");
+			logger.log(mns::log_types::entity_debug, "looking for trees");
 			dest = get_closest_to(p_x, p_y, mns::tile_types::tree, field);
-			logger.log(mns::log_types::low, "found trees: " + std::to_string(dest.first) + ':' + std::to_string(dest.second));
+			logger.log(mns::log_types::entity_debug, "found trees: " + std::to_string(dest.first) + ':' + std::to_string(dest.second));
 			if (dest.X == p_x && dest.Y == p_y)
 			{
-				logger.log(mns::log_types::low, "location matches current");
+				logger.log(mns::log_types::entity_debug, "location matches current");
 				field.dec_value(p_x, p_y, 1);
 				daily_toll();
 				return;
@@ -86,42 +86,42 @@ void mns::entity::update(mns::field& field, mns::logger& logger)
 	}
 	catch (...)
 	{
-		logger.log(mns::log_types::low, "failed to find destination");
-		logger.log(mns::log_types::low, "decreasing stats");
+		logger.log(mns::log_types::entity_debug, "failed to find destination");
+		logger.log(mns::log_types::entity_debug, "decreasing stats");
 		daily_toll();
 		return;
 	}
 
 	if (dest.X > p_x)
 	{
-		logger.log(mns::log_types::low, "increasing x");
+		logger.log(mns::log_types::entity_debug, "increasing x");
 		x += tile_size * speed;
 	}
 	else if (dest.X < p_x)
 	{
-		logger.log(mns::log_types::low, "decreasing x");
+		logger.log(mns::log_types::entity_debug, "decreasing x");
 		x -= tile_size * speed;
 	}
 	else
 	{
-		logger.log(mns::log_types::low, "x is fine");
+		logger.log(mns::log_types::entity_debug, "x is fine");
 	}
 
 	if (dest.Y > p_y)
 	{
-		logger.log(mns::log_types::low, "increasing y");
+		logger.log(mns::log_types::entity_debug, "increasing y");
 		y += tile_size * speed;
 	}
 	else if (dest.Y < p_y)
 	{
-		logger.log(mns::log_types::low, "decreasing y");
+		logger.log(mns::log_types::entity_debug, "decreasing y");
 		y -= tile_size * speed;
 	}
 	else
 	{
-		logger.log(mns::log_types::low, "y is fine");
+		logger.log(mns::log_types::entity_debug, "y is fine");
 	}
-	logger.log(mns::log_types::low, "decreasing stats");
+	logger.log(mns::log_types::entity_debug, "decreasing stats");
 	daily_toll();
 }
 

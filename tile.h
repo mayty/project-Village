@@ -1,5 +1,6 @@
 #pragma once
 #include "drawable.h"
+#include "logger.h"
 
 namespace mns
 {
@@ -24,7 +25,7 @@ namespace mns
 		void set_value(int value);
 		tile_types get_type();
 		int get_value();
-		int dec_value(int val);
+		int dec_value(mns::logger& logger, int val);
 		void draw(mns::window& window) override;
 		~tile() override;
 	private:

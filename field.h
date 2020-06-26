@@ -1,6 +1,7 @@
 #pragma once
 #include "drawable.h"
 #include "tile.h"
+#include "logger.h"
 #include <vector>
 
 namespace mns
@@ -17,11 +18,12 @@ namespace mns
 	private:
 		template<class T>
 		using matrix = std::vector<std::vector<T>>;
-
+		
+		mns::logger& logger;
 		matrix<tile> tiles;
 
 	public:
-		field(size_t w, size_t h, mns::generation_type generation_type);
+		field(mns::logger& logger, size_t w, size_t h, mns::generation_type generation_type);
 		void generate_new(mns::generation_type generation_type);
 		void draw(mns::window& window) override;
 		int get_height();

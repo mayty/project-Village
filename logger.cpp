@@ -7,19 +7,8 @@
 
 mns::logger::logger()
 {
-	l_mask = ~0ull;
-}
-
-mns::logger::logger(log_types max_type)
-{
 	l_mask = 0;
-	uint64_t max = (uint64_t)max_type;
-	uint64_t curr = 1;
-	while (curr <= max)
-	{
-		l_mask |= curr;
-		curr <<= 1;
-	}
+	//l_mask = ~0ull;
 }
 
 void mns::logger::log(const std::string& message)

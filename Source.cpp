@@ -8,20 +8,22 @@
 
 int main(int argC, char** argV)
 {
-	mns::logger logger{mns::log_types::none};
-	logger.set_mask_flag(mns::log_types::high);
+	mns::logger logger{};
+	logger.set_mask_flag(mns::log_types::world_generation);
+	logger.set_mask_flag(mns::log_types::tile_modification);
+	logger.set_mask_flag(mns::log_types::initialization);
 
 	try
 	{
-		logger.log(mns::log_types::high, "Initializing SDL2");
+		logger.log(mns::log_types::initialization, "Initializing SDL2");
 		mns::initializer initter{};
-		logger.log(mns::log_types::high, "Success");
+		logger.log(mns::log_types::initialization, "Success");
 
-		logger.log(mns::log_types::high, "Creating window");
+		logger.log(mns::log_types::initialization, "Creating window");
 		mns::window window{ "test", 800, 600 };
-		logger.log(mns::log_types::high, "Success");
+		logger.log(mns::log_types::initialization, "Success");
 
-		mns::field field{ 160, 120, mns::generation_type::ground };
+		mns::field field{ logger, 160, 120, mns::generation_type::ground };
 
 		window.clear();
 		field.draw(window);
@@ -132,8 +134,8 @@ int main(int argC, char** argV)
 			field.draw(window);
 			test.draw(window);
 			window.update();
-			logger.log(mns::log_types::low, "water: " + std::to_string(test.get_water()));
-			logger.log(mns::log_types::low, "health: " + std::to_string(test.get_health()));
+			logger.log(mns::log_types::entity_debug, "water: " + std::to_string(test.get_water()));
+			logger.log(mns::log_types::entity_debug, "health: " + std::to_string(test.get_health()));
 			//SDL_Delay(100);
 		}
 

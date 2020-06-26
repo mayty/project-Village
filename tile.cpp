@@ -42,7 +42,7 @@ int mns::tile::get_value()
 	return value;
 }
 
-int mns::tile::dec_value(int val)
+int mns::tile::dec_value(mns::logger& logger, int val)
 {
 	if (value >= val)
 	{
@@ -53,6 +53,7 @@ int mns::tile::dec_value(int val)
 		val = value;
 		value = 0;
 		type = mns::tile_types::ground;
+		logger.log(mns::log_types::tile_modification, "turned tile to ground");
 	}
 	return val;
 }

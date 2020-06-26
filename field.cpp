@@ -4,7 +4,8 @@
 
 static std::vector<mns::tile_types> get_probability_vector(const std::unordered_map<mns::tile_types, int>& probabilities_map);
 
-mns::field::field(size_t w, size_t h, mns::generation_type generation_type)
+mns::field::field(mns::logger& logger, size_t w, size_t h, mns::generation_type generation_type)
+	:logger{ logger }
 {
 	tiles.resize(h);
 	for (int i = 0; i < tiles.size(); ++i)
@@ -128,7 +129,7 @@ int mns::field::dec_value(int x, int y, int val)
 	{
 		throw std::exception{};
 	}
-	return tiles[y][x].dec_value(val);
+	return tiles[y][x].dec_value(logger, val);
 }
 
 mns::field::~field()
