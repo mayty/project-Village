@@ -1,6 +1,7 @@
 #pragma once
 #include "field.h"
 #include "drawable.h"
+#include "logger.h"
 
 namespace mns
 {
@@ -14,8 +15,10 @@ namespace mns
 		bool is_dead;
 	public:
 		entity();
+		double get_water();
+		double get_health();
 		void draw(mns::window& window) override;
-		void update(mns::field& field);
+		void update(mns::field& field, mns::logger& logger);
 	private:
 #define X first
 #define Y second

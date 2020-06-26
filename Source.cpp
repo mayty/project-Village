@@ -8,17 +8,18 @@
 
 int main(int argC, char** argV)
 {
-	mns::logger logger{};
+	mns::logger logger{mns::log_types::none};
+	logger.set_mask_flag(mns::log_types::high);
 
 	try
 	{
-		logger.log("Initializing SDL2");
+		logger.log(mns::log_types::high, "Initializing SDL2");
 		mns::initializer initter{};
-		logger.log("Success");
+		logger.log(mns::log_types::high, "Success");
 
-		logger.log("Creating window");
+		logger.log(mns::log_types::high, "Creating window");
 		mns::window window{ "test", 800, 600 };
-		logger.log("Success");
+		logger.log(mns::log_types::high, "Success");
 
 		mns::field field{ 160, 120, mns::generation_type::ground };
 
@@ -102,7 +103,7 @@ int main(int argC, char** argV)
 			}
 		}
 
-		//mns::entity test;
+		mns::entity test;
 
 		while (!to_exit)
 		{
@@ -126,12 +127,14 @@ int main(int argC, char** argV)
 					no_events = true;
 				}
 			}
-			//test.update(field);
+			test.update(field, logger);
 			window.clear();
 			field.draw(window);
-			//test.draw(window);
+			test.draw(window);
 			window.update();
-			SDL_Delay(100);
+			logger.log(mns::log_types::low, "water: " + std::to_string(test.get_water()));
+			logger.log(mns::log_types::low, "health: " + std::to_string(test.get_health()));
+			//SDL_Delay(100);
 		}
 
 	}
