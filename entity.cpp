@@ -13,6 +13,16 @@ mns::entity::entity()
 	is_dead = false;
 }
 
+mns::entity::entity(double x, double y)
+{
+	speed = 0.5;
+	this->x = x;
+	this->y = y;
+	water = 1.0;
+	health = 1.0;
+	is_dead = false;
+}
+
 double mns::entity::get_water()
 {
 	return water;

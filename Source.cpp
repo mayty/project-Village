@@ -14,6 +14,7 @@ int main(int argC, char** argV)
 	//logger.set_mask_flag(mns::log_types::tile_modification);
 	logger.set_mask_flag(mns::log_types::initialization);
 	logger.set_mask_flag(mns::log_types::texture_loading);	
+	//logger.set_mask_flag(mns::log_types::population_change);
 
 	try
 	{
@@ -47,9 +48,10 @@ int main(int argC, char** argV)
 		field.draw(window);
 		window.update();
 
+		std::list<mns::entity> entities;
+
 		bool to_exit = false;
-		bool to_continue = false;
-		while (!to_exit && !to_continue)
+		while (!to_exit)
 		{
 			switch (window.get_event())
 			{
@@ -60,26 +62,36 @@ int main(int argC, char** argV)
 				switch (window.get_last_press())
 				{
 				case SDL_SCANCODE_1:
+					logger.log(mns::log_types::population_change, "removing all entities");
+					entities.clear();
 					logger.log(mns::log_types::world_generation, "Generation world of ground");
 					field.generate_new(mns::generation_type::ground);
 					logger.log(mns::log_types::world_generation, "Done");
 					break;
 				case SDL_SCANCODE_2:
+					logger.log(mns::log_types::population_change, "removing all entities");
+					entities.clear();
 					logger.log(mns::log_types::world_generation, "Generation world of random");
 					field.generate_new(mns::generation_type::random);
 					logger.log(mns::log_types::world_generation, "Done");
 					break;
 				case SDL_SCANCODE_3:
+					logger.log(mns::log_types::population_change, "removing all entities");
+					entities.clear();
 					logger.log(mns::log_types::world_generation, "Generation world of small lakes");
 					field.generate_new(mns::generation_type::small_lakes);
 					logger.log(mns::log_types::world_generation, "Done");
-					break; 
+					break;
 				case SDL_SCANCODE_4:
+					logger.log(mns::log_types::population_change, "removing all entities");
+					entities.clear();
 					logger.log(mns::log_types::world_generation, "Generation world of islands type 1");
 					field.generate_new(mns::generation_type::lakes);
 					logger.log(mns::log_types::world_generation, "Done");
 					break;
 				case SDL_SCANCODE_5:
+					logger.log(mns::log_types::population_change, "removing all entities");
+					entities.clear();
 					logger.log(mns::log_types::world_generation, "Generation world of islands type 2");
 					field.generate_new(mns::generation_type::islands);
 					logger.log(mns::log_types::world_generation, "Done");
@@ -87,74 +99,30 @@ int main(int argC, char** argV)
 				case SDL_SCANCODE_ESCAPE:
 					to_exit = true;
 					break;
-				case SDL_SCANCODE_RETURN:
-					to_continue = true;
-					break;
-				}
-				window.clear();
-				field.draw(window);
-				window.update();
-				{
-					bool empty_queue = false;
-					while (!empty_queue)
-					{
-						switch (window.get_event())
-						{
-						case mns::events::quit:
-							to_exit = true;
-							empty_queue = true;
-							break;
-						case mns::events::keyboard:
-							if (window.get_last_press() == SDL_SCANCODE_RETURN)
-							{
-								to_continue = true;
-								empty_queue = true;
-							}
-							break;
-						case mns::events::none:
-							empty_queue = true;
-							break;
-						}
-					}
 				}
 				break;
-			default:
-				SDL_Delay(33);
-			}
-		}
-
-		mns::entity test;
-
-		while (!to_exit)
-		{
-			bool no_events = false;
-			while (!no_events)
+			case mns::events::mouse:
 			{
-				switch (window.get_event())
-				{
-				case mns::events::quit:
-					to_exit = true;
-					no_events = true;
+				auto pos = window.get_last_pos();
+				logger.log(mns::log_types::population_change, "got mouse input " + std::to_string(pos.first) + ':' + std::to_string(pos.second));
+				if (pos.first < 0 || pos.second < 0)
 					break;
-				case mns::events::keyboard:
-					if (window.get_last_press() == SDL_SCANCODE_ESCAPE)
-					{
-						to_exit = true;
-						no_events = true;
-					}
+				if (pos.first >= window.width() || pos.second >= window.height())
 					break;
-				case mns::events::none:
-					no_events = true;
-				}
+				logger.log(mns::log_types::population_change, "adding entity");
+				entities.push_back(mns::entity{ (double)pos.first, (double)pos.second });
+				break;
 			}
-			test.update(field, logger);
-			window.clear();
-			field.draw(window);
-			test.draw(window);
-			window.update();
-			logger.log(mns::log_types::entity_debug, "water: " + std::to_string(test.get_water()));
-			logger.log(mns::log_types::entity_debug, "health: " + std::to_string(test.get_health()));
-			//SDL_Delay(100);
+			case mns::events::none:
+				window.clear();
+				field.draw(window);
+				for (auto& i : entities)
+				{
+					i.update(field, logger);
+					i.draw(window);
+				}
+				window.update();
+			}
 		}
 
 	}

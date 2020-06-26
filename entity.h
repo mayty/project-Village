@@ -15,6 +15,7 @@ namespace mns
 		bool is_dead;
 	public:
 		entity();
+		entity(double x, double y);
 		double get_water();
 		double get_health();
 		void draw(mns::window& window) override;

@@ -11,6 +11,7 @@ namespace mns
 	class window
 	{
 	private:
+		std::pair<Sint32, Sint32> last_press_pos;
 		SDL_Scancode last_pressed;
 		SDL_Window* sdl_window;
 		SDL_Renderer* sdl_renderer;
@@ -23,6 +24,9 @@ namespace mns
 		void update();
 		void clear();
 		void fill(uint8_t r, uint8_t g, uint8_t b);
+		int width();
+		int height();
+		std::pair<Sint32, Sint32> get_last_pos();
 		SDL_Scancode get_last_press();
 		SDL_Window* get_window();
 		SDL_Renderer* get_renderer();

@@ -18,6 +18,7 @@ mns::window::window(const std::string& name, size_t w, size_t h)
 
 mns::window::window(window&& other) noexcept
 {
+	last_pressed = other.last_pressed;
 	sdl_window = other.sdl_window;
 	sdl_renderer = other.sdl_renderer;
 	other.sdl_renderer = nullptr;
@@ -50,6 +51,25 @@ void mns::window::fill(uint8_t r, uint8_t g, uint8_t b)
 	SDL_RenderClear(sdl_renderer);
 }
 
+int mns::window::width()
+{
+	int w;
+	SDL_GetWindowSize(sdl_window, &w, NULL);
+	return w;
+}
+
+int mns::window::height()
+{
+	int h;
+	SDL_GetWindowSize(sdl_window, NULL, &h);
+	return h;
+}
+
+std::pair<Sint32, Sint32> mns::window::get_last_pos()
+{
+	return last_press_pos;
+}
+
 SDL_Scancode mns::window::get_last_press()
 {
 	return last_pressed;
@@ -78,6 +98,11 @@ mns::events mns::window::get_event()
 		{
 			last_pressed = event.key.keysym.scancode;
 			return events::keyboard;
+		}
+		if (event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			last_press_pos = std::make_pair(event.button.x, event.button.y);
+			return events::mouse;
 		}
 		return events::other;
 	}
